@@ -132,6 +132,28 @@ loginBtn.addEventListener("click", () => {
       btn.classList.add("active");
       document.getElementById(tab).classList.add("active");
     });
+    
   });
   loadMyPlants(user);
 });
+
+
+function incomingReq() {
+  
+}
+
+const incomingTab = document.querySelector("#incoming-tab"); 
+
+incomingTab.addEventListener("click", () => {
+
+
+
+  console.log("Hej")
+  const statusPara = document.createElement("p");
+  statusPara.innerHTML = `Status: `; 
+
+  const tabContent = document.querySelector("#user-trades");
+  tabContent.appendChild(statusPara);
+
+  
+})
