@@ -190,6 +190,14 @@ loginBtn.addEventListener("click", () => {
 
       btn.classList.add("active");
       document.getElementById(tab).classList.add("active");
+
+ // Ladda data per tab
+      if (tab === "user-plants") {
+        loadMyPlants(user);
+      }
+      if (tab === "user-status") {
+        loadTradeStatus(user);
+      }
     });
   });
   loadMyPlants(user);
