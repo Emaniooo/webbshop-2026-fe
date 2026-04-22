@@ -174,8 +174,8 @@ incomingTab.addEventListener("click", () => {
       <div>
       <strong>${p.plantId?.plantName || "Okänd"}</strong>
       <p>Plats: ${p.requesterId?.location|| "Okänd"}</p>
-      <button class= "acceptBtn">Acceptera</button>
-      <button class= "declineBtn">Avböj</button>
+      <button class= "acceptBtn" id= "acceptBtn" >Acceptera</button>
+      <button class= "declineBtn" id= "declineBtn" >Avböj</button>
       </div>
       </div>
       `   ,
@@ -192,6 +192,6 @@ incomingTab.addEventListener("click", () => {
 
   getIncomingReq();
 
-  
+  const acceptBtn = document.quer
 
 })
