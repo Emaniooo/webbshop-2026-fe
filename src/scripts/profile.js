@@ -52,6 +52,7 @@ async function loadMyPlants(user) {
   });
 }
 
+// Se status 
 async function loadTradeStatus(user) {
   const container = document.getElementById("status-list");
   container.innerHTML = "Laddar...";
@@ -70,6 +71,18 @@ async function loadTradeStatus(user) {
 
     const trades = await res.json();
 
+  // Hitta userId 
+    const userId = user._id || user.id;
+
+// Skickade förfrågningar
+    const sentTrades = trades.filter(
+      (t) => t.requester && (t.requester._id === userId || t.requester === userId),
+    );
+
+    if (!sentTrades.length) {
+      container.innerHTML = "<p>Inga skickade förfrågningar ännu.</p>";
+      return;
+    }
 
 
 
