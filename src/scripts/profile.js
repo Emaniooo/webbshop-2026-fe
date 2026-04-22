@@ -7,12 +7,13 @@ async function loadMyPlants(user) {
   const res = await fetch(BASE_URL + "plants");
   const plants = await res.json();
 
-  const myPlants = plants.filter(p => p.ownerId === user.id);
+  const myPlants = plants.filter((p) => p.ownerId === user.id);
 
   const container = document.getElementById("plant-list");
 
   container.innerHTML = myPlants
-    .map((p) => `
+    .map(
+      (p) => `
       <div class="list-item">
         <img src="${p.imageUrl || p.image}" width="60" />
         <div>
@@ -21,10 +22,11 @@ async function loadMyPlants(user) {
           <button class="delete-btn" data-id="${p._id}">Ta bort</button>
         </div>
       </div>
-    `)
+    `,
+    )
     .join("");
 
-  // DELETE LOGIC
+  // Delete function DELETE LOGIC
   document.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
       const id = btn.dataset.id;
@@ -53,7 +55,6 @@ async function loadMyPlants(user) {
 
         alert("Växt borttagen 🌱");
         loadMyPlants(user);
-
       } catch (err) {
         console.error(err);
         alert("Något gick fel");
@@ -61,7 +62,6 @@ async function loadMyPlants(user) {
     });
   });
 }
-
 document.addEventListener("DOMContentLoaded", () => {
   const user = JSON.parse(sessionStorage.getItem("loggedIn"));
 
@@ -70,8 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  document.getElementById("welcome-text").textContent =
-    `Välkommen, ${user.name}!`;
+  const welcome = document.getElementById("welcome-text");
+  if (welcome) {
+    welcome.textContent = `Välkommen, ${user.name}!`;
+  }
 
   const loginBtn = document.getElementById("nav-login-btn");
   loginBtn.textContent = "Logga ut";
@@ -83,10 +85,14 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "index.html";
   });
 
-  const profileIconContainer = document.getElementById("profile-icon-container");
+  const profileIconContainer = document.getElementById(
+    "profile-icon-container",
+  );
   const profileDropdown = document.getElementById("profile-dropdown");
   const profileIcon = document.getElementById("profile-icon");
-  profileIconContainer.style.display = "block";
+  if (profileIconContainer) {
+    profileIconContainer.style.display = "block";
+  }
 
   document.getElementById("dd-name").textContent = user.name;
   document.getElementById("dd-email").textContent = user.email;

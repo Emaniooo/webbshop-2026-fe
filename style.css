@@ -867,3 +867,28 @@ h1, h2 {
   background-color: #d1ecf1;
   color: #0c5460;
 }
+
+/* Profile icon (SAFE ADD) */
+.profile-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+/* Ensure alignment */
+.nav-right {
+  align-items: center;
+}
+
+/* Dropdown positioning */
+.profile-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: white;
+  padding: 10px;
+  border: 1px solid #ddd;
+  display: none;
+  z-index: 1000;
+}

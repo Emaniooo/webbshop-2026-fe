@@ -7,7 +7,7 @@ function initRegister() {
   const skapaKontoLink = document.querySelector(".skapa-konto");
   const loginButton = registerForm.querySelector("button[type='submit']");
 
-// Logga in
+  // Logga in
   loginButton.addEventListener("click", (e) => {
     e.preventDefault();
     loginUser();
@@ -59,7 +59,7 @@ function registerUser() {
     alert("Det finns redan ett konto med denna email");
     return;
   }
-  
+
   const newUser = {
     id: Date.now(),
     name,
@@ -71,11 +71,10 @@ function registerUser() {
   localStorage.setItem("users", JSON.stringify(users));
 
   alert("Konto skapat! Du kan nu logga in.");
-  }
+}
 
-  
 // Logga in användare -- EMANS KOD using fake API
-  /* function loginUser() {
+/* function loginUser() {
   const data = validateFields();
   if (!data) return;
 
@@ -97,7 +96,6 @@ function registerUser() {
   window.location.href = "profil.html";
   } */
 
-
 /* Logga in med BE API med TOKEN */
 async function loginUser() {
   const data = validateLogin();
@@ -113,17 +111,16 @@ async function loginUser() {
     const res = await fetch(BASE_URL + "auth/login", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password }),
     });
 
     // parse response
     const result = await res.json();
 
-    // debug response 
+    // debug response
     console.log("LOGIN RESPONSE:", result);
-  
 
     // handle error from backend
     if (!res.ok) {
@@ -131,14 +128,17 @@ async function loginUser() {
       return;
     }
 
-    // SAVE TOKEN 
+    // ✅ SAVE TOKEN
     localStorage.setItem("token", result.token);
 
-    // KEEP team logic for UI)
+    // ✅ SAVE USER (THIS IS THE NEW IMPORTANT LINE)
+    localStorage.setItem("user", JSON.stringify(result.user || result));
+
+    // KEEP team logic for UI
     sessionStorage.setItem("loggedIn", JSON.stringify(result.user || {}));
 
+    // redirect
     window.location.href = "profil.html";
-
   } catch (error) {
     console.error("Login error:", error);
     alert("Något gick fel vid inloggning");
