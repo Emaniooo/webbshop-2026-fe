@@ -138,33 +138,16 @@ loginBtn.addEventListener("click", () => {
 });
 
 
-// function incomingReq() {
-  
-// }
-
+// incoming request 
 const incomingTab = document.querySelector("#incoming-tab");
 
 incomingTab.addEventListener("click", () => {
-
-
 
   console.log("Hej")
   const statusPara = document.createElement("p");
   statusPara.innerHTML = `Status: `;
 
   const incomingTradesBox = document.querySelector("#Incoming-trades-box");
-  // incomingTradesBox.appendChild(statusPara);
-
-  // const acceptReqBtn = document.createElement("button");
-  // acceptReqBtn.setAttribute("class", "acceptBtn");
-  // acceptReqBtn.innerHTML = `Accept`;
-  // incomingTradesBox.append(acceptReqBtn);
-
-  // const declineReqBtn = document.createElement("button");
-  // declineReqBtn.setAttribute("class", "declineBtn")
-  // declineReqBtn.innerHTML = `Decline`;
-  // incomingTradesBox.append(declineReqBtn);
-
 
   async function getIncomingReq() {
     try {
