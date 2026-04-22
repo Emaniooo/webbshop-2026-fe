@@ -1,10 +1,11 @@
 import { map } from "../utils/map.js";
 
 import { getBaseUrl } from "../utils/api.js";
+const BASE_URL = getBaseUrl();
 
 // console.log("map_page.js is running");
 
-// const BASE_URL = getBaseUrl();
+
 
 // // simulate login (can be null)
 // /* const currentUser = localStorage.getItem("user"); */
@@ -26,7 +27,7 @@ map.on("popupopen", (e) => {
     tradeBtn.onclick = () => {
       const token = localStorage.getItem("token");
 
-      // 🔒 login check
+      // login check
       if (!token) {
         alert("Du måste logga in först");
         return;
@@ -34,7 +35,7 @@ map.on("popupopen", (e) => {
 
       const plantId = tradeBtn.dataset.id;
 
-      console.log("CLICKED ✅");
+      console.log("CLICKED");
       console.log("Plant ID:", plantId);
 
       // TEMP feedback (before BE)
@@ -57,6 +58,7 @@ map.on("popupopen", (e) => {
 
 //
 document.addEventListener("click", async (event) => {
+  
   const tradeBtn = event.target.closest(".trade-btn");
   if (!tradeBtn) return;
 
@@ -69,6 +71,10 @@ document.addEventListener("click", async (event) => {
   }
 
   const plantId = tradeBtn.dataset.id;
+
+  // See plant ID and users
+console.log("CLICKED PLANT ID:", plantId);
+console.log("CURRENT USER:", JSON.parse(localStorage.getItem("user"))?.id);
 
   try {
     const res = await fetch(`${BASE_URL}trades/`, {
