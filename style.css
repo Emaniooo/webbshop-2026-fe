@@ -845,3 +845,26 @@ h1, h2 {
   box-shadow: 0 10px 35px rgba(0,0,0,0.08);
   border: 1px solid #e6efe8;
 }
+
+/* ------------------ incoming request start here ---------------*/
+
+#incoming-req {
+  height: fit-content;
+  max-width: 1200px ;
+  
+
+}
+
+.acceptBtn {
+  background-color: #113F18;
+  margin-bottom: 10px;
+}
+
+.declineBtn {
+  background-color: #420F0F;
+}
+
+.acceptBtn, .declineBtn {
+  max-width: 120px;
+}
+/* ------------------ incoming request end here ---------------*/

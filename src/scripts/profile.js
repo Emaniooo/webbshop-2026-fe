@@ -138,11 +138,11 @@ loginBtn.addEventListener("click", () => {
 });
 
 
-function incomingReq() {
+// function incomingReq() {
   
-}
+// }
 
-const incomingTab = document.querySelector("#incoming-tab"); 
+const incomingTab = document.querySelector("#incoming-tab");
 
 incomingTab.addEventListener("click", () => {
 
@@ -150,10 +150,65 @@ incomingTab.addEventListener("click", () => {
 
   console.log("Hej")
   const statusPara = document.createElement("p");
-  statusPara.innerHTML = `Status: `; 
+  statusPara.innerHTML = `Status: `;
 
-  const tabContent = document.querySelector("#user-trades");
-  tabContent.appendChild(statusPara);
+  const incomingTradesBox = document.querySelector("#Incoming-trades-box");
+  // incomingTradesBox.appendChild(statusPara);
+
+  // const acceptReqBtn = document.createElement("button");
+  // acceptReqBtn.setAttribute("class", "acceptBtn");
+  // acceptReqBtn.innerHTML = `Accept`;
+  // incomingTradesBox.append(acceptReqBtn);
+
+  // const declineReqBtn = document.createElement("button");
+  // declineReqBtn.setAttribute("class", "declineBtn")
+  // declineReqBtn.innerHTML = `Decline`;
+  // incomingTradesBox.append(declineReqBtn);
+
+
+  async function getIncomingReq() {
+    try {
+      const res = await fetch(getBaseUrl() + "trades/me", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      console.log(res);
+      if (!res.ok) {
+        throw new Error("Failed to fetch trades");
+      }
+
+      const data = await res.json();
+
+      const incomingTrades = data; 
+
+      incomingTradesBox.innerHTML = incomingTrades.map(
+      (p) => `
+      <div class="list-item">
+      <p>${p.requesterId?.name || "Okänd"} har skickat en förfrågan</p>
+      <img src="${p.plantId?.imageUrl || "Bild kunde ej laddas"}" width="60" />
+      <div>
+      <strong>${p.plantId?.plantName || "Okänd"}</strong>
+      <p>Plats: ${p.requesterId?.name.location || "Okänd"}</p>
+      <button class= "acceptBtn">Acceptera</button>
+      <button class= "declineBtn">Avböj</button>
+      </div>
+      </div>
+      `   ,
+      )
+      .join("");
+
+      console.log(data);
+
+      
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  getIncomingReq();
 
   
+
 })
