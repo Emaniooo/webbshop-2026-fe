@@ -52,6 +52,31 @@ async function loadMyPlants(user) {
   });
 }
 
+async function loadTradeStatus(user) {
+  const container = document.getElementById("status-list");
+  container.innerHTML = "Laddar...";
+
+  try {
+    const res = await fetch(BASE_URL + "trades/me", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+
+
+
+    
+}catch (err) {
+    console.error(err);
+    container.innerHTML = "<p>Ett fel uppstod när status skulle hämtas.</p>";
+  }
+}
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const user = JSON.parse(sessionStorage.getItem("loggedIn"));
 
