@@ -62,11 +62,18 @@ async function loadTradeStatus(user) {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-
-
-
-
     
+    if (!res.ok) {
+      container.innerHTML = "<p>Kunde inte hämta status just nu.</p>";
+      return;
+    }
+
+    const trades = await res.json();
+
+
+
+
+
 }catch (err) {
     console.error(err);
     container.innerHTML = "<p>Ett fel uppstod när status skulle hämtas.</p>";
