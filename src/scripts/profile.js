@@ -1,6 +1,7 @@
 import { getBaseUrl } from "../utils/api.js";
 const BASE_URL = getBaseUrl();
 
+/* Mina Växter */
 async function loadMyPlants(user) {
   const res = await fetch(BASE_URL + "plants");
   const plants = await res.json();
@@ -10,28 +11,28 @@ async function loadMyPlants(user) {
   const container = document.getElementById("plant-list");
 
   container.innerHTML = myPlants
-    .map(
-      (p) => `
-    <div class="list-item">
-      <img src="${p.image || p.imageUrl}" width="60" />
-      <div>
-        <strong>${p.name || p.plantName}</strong>
-        <p>Plats: ${p.location || "Okänd"}</p>
-        <button class="delete-btn" data-id="${p._id}">Ta bort</button>
+    .map((p) => {
+      /* console.log("PLANT:", p);  *///shows eaach plant
+      return `
+      <div class="list-item">
+        <img src="${p.imageUrl || p.image}" width="60" />
+        <div>
+          <strong>${p.plantName || p.name}</strong>
+
+          <p>☀️ Light: ${p.light ?? "N/A"}</p>
+
+          <button class="delete-btn" data-id="${p._id}">Ta bort</button>
+        </div>
       </div>
-    </div>
-  `,
-    )
+    `;
+    })
     .join("");
 
-  //
+  // Delete function
   document.querySelectorAll(".delete-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
-      console.log("CLICKED");
-
       const id = btn.dataset.id;
-      console.log("Deleting:", id);
-
+  
       await fetch(BASE_URL + "plants/" + id, {
         method: "DELETE",
         headers: {
@@ -39,13 +40,13 @@ async function loadMyPlants(user) {
         },
       });
 
-        // Notis-ikon
-        const notifIcon = document.getElementById("notification-icon");
+      // Notis-ikon
+      const notifIcon = document.getElementById("notification-icon");
 
-        if (notifIcon) {
-          const hasNotification = true; // byter till backend sen
-          notifIcon.src = hasNotification ? "notis2.png" : "notis1.png";
-        }
+      if (notifIcon) {
+        const hasNotification = true; // byter till backend sen
+        notifIcon.src = hasNotification ? "notis2.png" : "notis1.png";
+      }
 
       loadMyPlants(user);
     });
@@ -67,15 +68,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Ändra nav-knappen till Logga ut
   const loginBtn = document.getElementById("nav-login-btn");
-loginBtn.textContent = "Logga ut";
-loginBtn.href = "#";
+  loginBtn.textContent = "Logga ut";
+  loginBtn.href = "#";
 
-loginBtn.addEventListener("click", () => {
-  sessionStorage.removeItem("loggedIn");
+  loginBtn.addEventListener("click", () => {
+    sessionStorage.removeItem("loggedIn");
     alert("Du har loggats ut!");
-  window.location.href = "index.html";
-});
-
+    window.location.href = "index.html";
+  });
 
   // Visa profil-ikon när man är inloggad
   const profileIconContainer = document.getElementById(
@@ -131,7 +131,102 @@ loginBtn.addEventListener("click", () => {
 
       btn.classList.add("active");
       document.getElementById(tab).classList.add("active");
+
+      // *** Waraporn's EXTENSION added LOAD DATA BASED ON TAB
+      if (tab === "user-history") {
+        loadHistory(user);
+      }
+
+      if (tab === "user-plants") {
+        loadMyPlants(user);
+      }
     });
   });
   loadMyPlants(user);
 });
+/* Load history when click tab */
+/* document
+  .querySelector('[data-tab="user-history"]')
+  .addEventListener("click", () => {
+    loadHistory(user);
+  }); */
+
+/* HELPER fuuctnion  */
+function getStatusBadge(status) {
+  if (status === "pending") {
+    return `<span class="status pending">⏳ Pending</span>`;
+  }
+  if (status === "approved") {
+    return `<span class="status approved">✅ Approved</span>`;
+  }
+  if (status === "completed") {
+    return `<span class="status completed">🎉 Completed</span>`;
+  }
+  return `<span class="status">${status}</span>`;
+}
+
+/* History */
+async function loadHistory(user) {
+  const res = await fetch("https://plottwistgrupp11.vercel.app/trades/me", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+
+  if (!res.ok) {
+    const container = document.getElementById("user-history");
+    container.innerHTML = "<p>Session expired – logga in igen</p>";
+    return;
+  }
+
+  const trades = await res.json();
+  const history = trades.data || trades;
+  /* Switch to this when trade is completed with apporved status */
+  /* const history = trades.filter(t => t.status === "completed"); */
+  
+  /* Sort trade to the latest date first */
+  history.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  const container = document.getElementById("user-history");
+
+  if (!Array.isArray(history) || history.length === 0) {
+    container.innerHTML = "<p>Ingen historik att visa.</p>";
+    return;
+  }
+
+  container.innerHTML = history
+    .map((t) => {
+      const plant = t.plantId;
+
+      const isSender = t.requesterId?._id === user.id;
+
+      const otherUser = isSender
+        ? t.ownerId?.name || "Unknown"
+        : t.requesterId?.name || "Unknown";
+
+      const direction = isSender ? `Du → ${otherUser}` : `${otherUser} → Du`;
+
+      return `
+      <div class="list-item">
+        <img 
+          src="${plant?.imageUrl || "default-plant.png"}" 
+          width="60"
+          onerror="this.src='default-plant.png'"
+        />
+
+        <div>
+          <strong>${plant?.plantName || "Växt"}</strong>
+
+          <p>☀️ Light: ${plant?.light ?? "N/A"}</p>
+
+          <p>🤝 ${direction}</p>
+
+          <p>${getStatusBadge(t.status)}</p>
+
+          <p>📅 ${new Date(t.createdAt).toLocaleString()}</p>
+        </div>
+      </div>
+    `;
+    })
+    .join("");
+}
