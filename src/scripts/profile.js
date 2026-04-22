@@ -173,7 +173,7 @@ incomingTab.addEventListener("click", () => {
       <img src="${p.plantId?.imageUrl || "Bild kunde ej laddas"}" width="60" />
       <div>
       <strong>${p.plantId?.plantName || "Okänd"}</strong>
-      <p>Plats: ${p.requesterId?.name.location || "Okänd"}</p>
+      <p>Plats: ${p.requesterId?.location|| "Okänd"}</p>
       <button class= "acceptBtn">Acceptera</button>
       <button class= "declineBtn">Avböj</button>
       </div>
