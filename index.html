@@ -46,8 +46,26 @@
       </div>
 
       <div class="nav-right">
-        <a href="login.html" class="nav-link">Logga in</a>
-      </div>
+
+  <!-- Notiser-->
+  <a href="profil.html#user-trades" id="notification-link" style="display:none;">
+    <img id="notification-icon" src="notis1.png" alt="notis">
+  </a>
+
+  <!-- Profil-ikon-->
+  <div id="profile-icon-container" class="profile-icon-container" style="display:none;">
+    <img src="user.png" alt="Profil" class="profile-icon" id="profile-icon">
+
+    <div id="profile-dropdown" class="profile-dropdown">
+      <p><strong id="dd-name"></strong></p>
+      <p id="dd-email"></p>
+    </div>
+  </div>
+
+  <!-- Logga in / Logga ut -->
+  <a href="login.html" class="nav-link" id="nav-login-btn">Logga in</a>
+</div>
+
     </nav>
 
   </header>
@@ -136,6 +154,8 @@
   <!-- PAGE-SPECIFIC JAVASCRIPT -->
   <script type="module" src="./src/scripts/map_page.js"></script>
   <script type="module" src="./src/scripts/index.js"></script>
+  <script type="module" src="./src/scripts/auth.js"></script>
+
 </body>
 
 </html>

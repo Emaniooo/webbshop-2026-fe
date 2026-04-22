@@ -137,8 +137,6 @@ async function loginUser() {
     // KEEP team logic for UI)
     sessionStorage.setItem("loggedIn", JSON.stringify(result.user || {}));
 
-    alert("Välkommen!");
-
     window.location.href = "profil.html";
 
   } catch (error) {
