@@ -1032,7 +1032,10 @@ h1, h2 {
 
   .navbar.open .nav-left,
   .navbar.open .nav-right {
-    display: flex;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column-reverse;
+        align-items: flex-end;
   }
 
   .hero-title-växt {
@@ -1072,7 +1075,7 @@ h1, h2 {
 @media (max-width: 1280px) {
 
   .navbar {
-    padding: 15px 20px;
+    padding: 1px 1rem;
   }
 
   .hero-content {
