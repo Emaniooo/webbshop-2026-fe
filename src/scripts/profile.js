@@ -208,6 +208,9 @@ loginBtn.addEventListener("click", () => {
       if (tab === "user-status") {
         loadTradeStatus(user);
       }
+      if(tab === "incoming-tab") {
+        getIncomingReq(user);
+      }
     });
     
   });
@@ -223,7 +226,7 @@ loginBtn.addEventListener("click", () => {
 const incomingTradesbox = document.querySelector("#Incoming-trades-box");
 
 // 
-async function getIncomingReq() {
+async function getIncomingReq(user) {
   try {
     //get backend data of trades 
     const res = await fetch(getBaseUrl() + "trades/me", {
@@ -247,6 +250,8 @@ async function getIncomingReq() {
       incomingTradesbox.append(displayNoRequests);
       return;
     }
+
+    data = data.filter((trade) => trade.ownerId !== null && trade.ownerId.id !== null && trade.ownerId.id !== user.id);
 
     //display data as text and image to user 
     incomingTradesbox.innerHTML = data.map(
@@ -277,7 +282,7 @@ incomingTradesbox.addEventListener("click", (e) => {
   //check if button exist in the container
   if(e.target.classList.contains("acceptBtn")) {
     const idRequest = e.target.dataset.id;
-    console.log("Approved" + idRequest);
+    console.log("Approved " + idRequest);
 
     acceptTrade(idRequest);
 
@@ -288,8 +293,6 @@ incomingTradesbox.addEventListener("click", (e) => {
     alert("Du nekade förfrågan");
   }
 })
-
-getIncomingReq();
 
 async function acceptTrade(id) {
   try {
@@ -309,6 +312,8 @@ async function acceptTrade(id) {
     alert("Fel uppstod. Vänligen försök igen senare");
   }
 }
+
+
 
 //decline trade function here 
 
