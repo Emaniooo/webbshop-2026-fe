@@ -220,11 +220,9 @@ loginBtn.addEventListener("click", () => {
 
 /* ------------------------------- incoming request start here  ------------------------------------------ */
 
-const statusPara = document.createElement("p");
-statusPara.innerHTML = `Status: `;
-
 const incomingTradesbox = document.querySelector("#Incoming-trades-box");
 
+// 
 async function getIncomingReq() {
   try {
     //get backend data of trades 
@@ -242,7 +240,7 @@ async function getIncomingReq() {
     
     const data = await res.json();
     
-
+    //Check if there is no data and output text to user 
     if (!data || data.length === 0) {
       const displayNoRequests = document.createElement("p");
       displayNoRequests.innerHTML = `Du har inga förfrågningar`;
@@ -250,6 +248,7 @@ async function getIncomingReq() {
       return;
     }
 
+    //display data as text and image to user 
     incomingTradesbox.innerHTML = data.map(
     (p) => `
     <div class="list-item">
@@ -258,10 +257,8 @@ async function getIncomingReq() {
     <div>
     <strong>${p.plantId?.plantName || "Okänd"}</strong>
     <p>Plats: ${p.requesterId?.location|| "Okänd"}</p>
-    <button class= "acceptBtn" data-id="${p._id}" >Acceptera</button>
-    <button class= "declineBtn" data-id="${p._id}">Avböj</button>
-    
-    
+    <button class= "acceptBtn" data-id="${p._id}" >Godkänn</button>
+    <button class= "declineBtn" data-id="${p._id}">Neka</button>
     </div>
     </div>
     `   ,
@@ -270,33 +267,29 @@ async function getIncomingReq() {
 
     console.log(data);
 
-    
   } catch (error) {
     console.error(error);
   }
 
 }
 
-//check if buttons exist and set logic
 incomingTradesbox.addEventListener("click", (e) => {
+  //check if button exist in the container
   if(e.target.classList.contains("acceptBtn")) {
-    console.log("approved");
-    // console.log(e.data.id)
     const idRequest = e.target.dataset.id;
     console.log("Approved" + idRequest);
 
     acceptTrade(idRequest);
 
-  } else if(e.target.classList.contains("declineBtn")) {
-    console.log("Declined");
+  } if(e.target.classList.contains("declineBtn")) {
     const idRequest = e.target.dataset.id;
     console.log("Declined " + idRequest)
-    //alert here 
+    
+    alert("Du nekade förfrågan");
   }
 })
 
 getIncomingReq();
-
 
 async function acceptTrade(id) {
   try {
@@ -305,16 +298,18 @@ async function acceptTrade(id) {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       }
-
-      //alert here 
     });
     if (!res.ok) {
       throw new Error("Failed to approve trade");
     }
+
+      alert("Du godkände förfrågan!");
   } catch (error) {
     console.error(error);
-    //alert here
+    alert("Fel uppstod. Vänligen försök igen senare");
   }
 }
+
+//decline trade function here 
 
 /* ------------------------------- incoming request ends here  ------------------------------------------ */
