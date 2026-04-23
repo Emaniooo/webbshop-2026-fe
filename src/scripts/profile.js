@@ -210,8 +210,6 @@ async function getIncomingReq() {
 
 }
 
-
-
 //check if buttons exist and set logic
 incomingTradesbox.addEventListener("click", (e) => {
   if(e.target.classList.contains("acceptBtn")) {
@@ -221,7 +219,6 @@ incomingTradesbox.addEventListener("click", (e) => {
     console.log("Approved" + idRequest);
 
     acceptTrade(idRequest);
-  
 
   } else if(e.target.classList.contains("declineBtn")) {
     console.log("Declined");
