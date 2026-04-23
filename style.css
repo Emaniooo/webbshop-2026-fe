@@ -904,9 +904,111 @@ h1, h2 {
   border-radius: 3px;
 }
 
-/* MOBILMENY */
+
+/* Responsiv */
+
+/* Mobil */
+@media (max-width: 480px) {
+.main-content {
+    margin: 10rem auto;
+  }
+
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px;
+  }
+
+  .nav-left, .nav-right {
+    gap: 15px;
+  }
+
+  .hero {
+    height: 100px;
+  }
+
+  .plot-logo {
+    font-size: 36px;
+  }
+
+  .hero-plant {
+    height: 60px;
+  }
+
+  .home-hero {
+    height: 500px;
+  }
+
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    padding: 0;
+    gap: 10px;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  .steps {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .step {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .hero-title-växt {
+    font-size: 42px;
+    margin-left: 37px;
+  }
+}
+
+/* Mobil + små tablets */
 @media (max-width: 768px) {
 
+  .hero-title {
+    font-size: 48px;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+    max-width: 90%;
+    margin: 0 auto 20px;
+  }
+
+  .hero-buttons {
+    padding: 2rem 0;
+  }
+
+  .steps {
+    gap: 30px;
+  }
+
+  .our-idea p {
+    padding: 30px;
+    font-size: 18px;
+  }
+  /* MOBILMENY */
   .hamburger {
     display: flex;
     margin-left: auto;
