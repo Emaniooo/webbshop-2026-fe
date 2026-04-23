@@ -56,10 +56,11 @@
 
   <!-- MAIN CONTENT -->
   <main class="main-content-profile">
-    
+
     <div class="profile-tabs">
       <div class="tab-btn active" data-tab="user-plants">Mina växter</div>
       <div class="tab-btn" id="incoming-tab" data-tab="user-trades">Förfrågningar</div>
+      <div class="tab-btn" data-tab="user-status">Se status</div>
       <div class="tab-btn" data-tab="user-history">Historik</div>
     </div>
 
@@ -72,8 +73,12 @@
       <!-- <p>Inga förfrågningar att visa.</p>     -->
     </section>
 
+    <section id="user-status" class="tab-content">
+      <div id="status-list" class="list-container"></div>
+    </section>
+
     <section id="user-history" class="tab-content">
-      <p>Ingen historik att visa.</p>   
+      <p>Ingen historik att visa.</p>
     </section>
   </main>
 

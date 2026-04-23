@@ -61,6 +61,66 @@ async function loadMyPlants(user) {
     });
   });
 }
+
+// Se status 
+async function loadTradeStatus(user) {
+  const container = document.getElementById("status-list");
+  container.innerHTML = "Laddar...";
+
+  try {
+    const res = await fetch(BASE_URL + "trades/me", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    
+    if (!res.ok) {
+      container.innerHTML = "<p>Kunde inte hämta status just nu.</p>";
+      return;
+    }
+
+    const trades = await res.json();
+
+  // Hitta userId 
+    const userId = user._id || user.id;
+
+// Skickade förfrågningar
+    const sentTrades = trades.filter(
+      (t) => t.requester && (t.requester._id === userId || t.requester === userId),
+    );
+
+    if (!sentTrades.length) {
+      container.innerHTML = "<p>Inga skickade förfrågningar ännu.</p>";
+      return;
+    }
+
+    container.innerHTML = sentTrades
+      .map((t) => {
+        const plant = t.plantId || t.plant || {};
+        const receiver = t.owner || t.receiver || {};
+        const status = t.status || "pending";
+
+        return `
+        <div class="list-item status-item">
+          <img src="${plant.imageUrl || plant.image || "placeholder.png"}" width="60" />
+          <div class="status-main">
+            <strong>${plant.plantName || plant.name || "Okänd växt"}</strong>
+            <p>Mottagare: ${receiver.name || "Okänd användare"}</p>
+          </div>
+          <div class="status-meta">
+            <span class="status-badge status-${status}">${status}</span>
+          </div>
+        </div>
+      `;
+      })
+      .join("");
+
+}catch (err) {
+    console.error(err);
+    container.innerHTML = "<p>Ett fel uppstod när status skulle hämtas.</p>";
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const user = JSON.parse(sessionStorage.getItem("loggedIn"));
 
@@ -140,6 +200,14 @@ loginBtn.addEventListener("click", () => {
 
       btn.classList.add("active");
       document.getElementById(tab).classList.add("active");
+
+ // Ladda data per tab
+      if (tab === "user-plants") {
+        loadMyPlants(user);
+      }
+      if (tab === "user-status") {
+        loadTradeStatus(user);
+      }
     });
     
   });
