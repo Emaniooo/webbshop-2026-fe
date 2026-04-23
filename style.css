@@ -1034,9 +1034,36 @@ h1, h2 {
   .navbar.open .nav-right {
     display: flex;
   }
-  
+
   .hero-title-växt {
     font-size: 55px;
     margin-left: 8rem;
   }
 }
+
+
+/* Tablets */
+@media (max-width: 1024px) {
+
+  .home-hero {
+    height: 650px;
+  }
+
+  .hero-title {
+    font-size: 56px;
+  }
+
+  .hero-buttons {
+    padding: 4rem 0;
+  }
+
+  .steps {
+    gap: 40px;
+  }
+
+  .hero-title-växt {
+    font-size: 58px;
+    margin-left: 16rem;
+  }
+}
+
