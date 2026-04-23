@@ -1067,3 +1067,25 @@ h1, h2 {
   }
 }
 
+
+/* Laptops */
+@media (max-width: 1280px) {
+
+  .navbar {
+    padding: 15px 20px;
+  }
+
+  .hero-content {
+    max-width: 700px;
+  }
+
+  .steps {
+    gap: 40px;
+  }
+
+  .hero-title-växt {
+    font-size: 70px;
+    margin-left: 22rem;
+    margin-bottom: 15px;
+  }
+}
