@@ -860,3 +860,46 @@ h1, h2 {
 .approve-btn:hover {
   background-color: #005f73;
 }
+/* --- SE STATUS --- */
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 15px;
+  background: #A2BF8F;
+  border: 2px solid white;
+}
+
+.status-main {
+  flex: 1;
+}
+
+.status-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Status färger */
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-approved {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-completed {
+  background-color: #cce5ff;
+  color: #004085;
+}
