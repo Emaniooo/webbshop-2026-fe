@@ -152,7 +152,7 @@ loginBtn.addEventListener("click", () => {
 
 /* ------------------------------- incoming request start here  ------------------------------------------ */
 
-const incomingTab = document.querySelector("#incoming-tab");
+// const incomingTab = document.querySelector("#incoming-tab");
 const statusPara = document.createElement("p");
 statusPara.innerHTML = `Status: `;
 
