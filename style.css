@@ -889,3 +889,35 @@ h1, h2 {
   background-color: #cce5ff;
   color: #004085;
 }
+
+/* ------------------ incoming request start here ---------------*/
+
+#incoming-req {
+  height: fit-content;
+  max-width: 1200px ;
+  
+
+}
+
+.acceptBtn {
+  background-color: #113F18;
+  margin-bottom: 10px;
+}
+
+.acceptBtn:hover {
+  background-color: #195d23;
+}
+
+.declineBtn {
+  background-color: #420F0F;
+}
+
+.declineBtn:hover {
+  background-color:  #5d1717;;
+}
+
+
+.acceptBtn, .declineBtn {
+  max-width: 120px;
+}
+/* ------------------ incoming request end here ---------------*/

@@ -200,7 +200,6 @@ loginBtn.addEventListener("click", () => {
 
       btn.classList.add("active");
       document.getElementById(tab).classList.add("active");
-
  // Ladda data per tab
       if (tab === "user-plants") {
         loadMyPlants(user);
@@ -208,7 +207,11 @@ loginBtn.addEventListener("click", () => {
       if (tab === "user-status") {
         loadTradeStatus(user);
       }
+      if(tab === "user-trades") {
+        getIncomingReq(user);
+      }
     });
+    
   });
   setTimeout(() => {
   loadMyPlants(user);
@@ -216,3 +219,105 @@ loginBtn.addEventListener("click", () => {
 
   loadMyPlants(user);
 });
+
+/* ------------------------------- incoming request start here  ------------------------------------------ */
+
+const incomingTradesbox = document.querySelector("#Incoming-trades-box");
+
+// 
+async function getIncomingReq(user) {
+  console.log("get incoming request");
+  try {
+    //get backend data of trades 
+    const res = await fetch(getBaseUrl() + "trades/me", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+    console.log(res);
+    if (!res.ok) {
+      throw new Error("Could not fetch trades");
+
+    }
+    
+    let data = await res.json();
+    
+    //Check if there is no data and output text to user 
+    if (!data || data.length === 0) {
+      const displayNoRequests = document.createElement("p");
+      displayNoRequests.innerHTML = `Du har inga förfrågningar`;
+      incomingTradesbox.append(displayNoRequests);
+      return;
+    }
+
+    console.log(data);
+
+    data = data.filter((trade) => trade.ownerId !== null && trade.ownerId.id !== null && trade.ownerId._id === user.id && trade.status === "pending");
+
+    //display data as text and image to user 
+    incomingTradesbox.innerHTML = data.map(
+    (p) => `
+    <div class="list-item">
+    <p>${p.requesterId?.name || "Okänd"} har skickat en förfrågan</p>
+    <img src="${p.plantId?.imageUrl || "Bild kunde ej laddas"}" width="60" />
+    <div>
+    <strong>${p.plantId?.plantName || "Okänd"}</strong>
+    <p>Plats: ${p.requesterId?.location|| "Okänd"}</p>
+    <button class= "acceptBtn" data-id="${p._id}" >Godkänn</button>
+    <button class= "declineBtn" data-id="${p._id}">Neka</button>
+    </div>
+    </div>
+    `   ,
+    )
+    .join("");
+
+    console.log(data);
+
+  } catch (error) {
+    console.error(error);
+  }
+
+}
+
+incomingTradesbox.addEventListener("click", (e) => {
+  //check if button exist in the container
+  if(e.target.classList.contains("acceptBtn")) {
+    const idRequest = e.target.dataset.id;
+    console.log("Approved " + idRequest);
+
+    acceptTrade(idRequest);
+
+  } if(e.target.classList.contains("declineBtn")) {
+    const idRequest = e.target.dataset.id;
+    console.log("Declined " + idRequest)
+    
+    alert("Du nekade förfrågan");
+  }
+
+})
+
+async function acceptTrade(id) {
+  try {
+    const res = await fetch(getBaseUrl() + "trades/" + id + "/approve", {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }
+    });
+    if (!res.ok) {
+      throw new Error("Failed to approve trade");
+    }
+
+      alert("Du godkände förfrågan!");
+  } catch (error) {
+    console.error(error);
+    alert("Fel uppstod. Vänligen försök igen senare");
+  }
+
+  window.location.reload();
+}
+
+//decline trade function here 
+
+/* ------------------------------- incoming request ends here  ------------------------------------------ */
