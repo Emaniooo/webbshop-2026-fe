@@ -200,7 +200,6 @@ loginBtn.addEventListener("click", () => {
 
       btn.classList.add("active");
       document.getElementById(tab).classList.add("active");
-
  // Ladda data per tab
       if (tab === "user-plants") {
         loadMyPlants(user);
@@ -208,7 +207,7 @@ loginBtn.addEventListener("click", () => {
       if (tab === "user-status") {
         loadTradeStatus(user);
       }
-      if(tab === "incoming-tab") {
+      if(tab === "user-trades") {
         getIncomingReq(user);
       }
     });
@@ -227,6 +226,7 @@ const incomingTradesbox = document.querySelector("#Incoming-trades-box");
 
 // 
 async function getIncomingReq(user) {
+  console.log("get incoming request");
   try {
     //get backend data of trades 
     const res = await fetch(getBaseUrl() + "trades/me", {
@@ -241,7 +241,7 @@ async function getIncomingReq(user) {
 
     }
     
-    const data = await res.json();
+    let data = await res.json();
     
     //Check if there is no data and output text to user 
     if (!data || data.length === 0) {
@@ -251,7 +251,9 @@ async function getIncomingReq(user) {
       return;
     }
 
-    data = data.filter((trade) => trade.ownerId !== null && trade.ownerId.id !== null && trade.ownerId.id !== user.id);
+    console.log(data);
+
+    data = data.filter((trade) => trade.ownerId !== null && trade.ownerId.id !== null && trade.ownerId._id === user.id && trade.status === "pending");
 
     //display data as text and image to user 
     incomingTradesbox.innerHTML = data.map(
@@ -292,6 +294,7 @@ incomingTradesbox.addEventListener("click", (e) => {
     
     alert("Du nekade förfrågan");
   }
+
 })
 
 async function acceptTrade(id) {
@@ -311,9 +314,9 @@ async function acceptTrade(id) {
     console.error(error);
     alert("Fel uppstod. Vänligen försök igen senare");
   }
+
+  window.location.reload();
 }
-
-
 
 //decline trade function here 
 
