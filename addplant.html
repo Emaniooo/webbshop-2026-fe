@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PLOT TWIST</title>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Karla:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- PLot Twist - HEADER -->
+  <header class="header">
+    <div class="hero">
+      <h1 class="plot-logo">PLOT TWIST</h1>
+      <img src="logo-2.png" alt="plant" class="hero-plant" />
+    </div>
+
+    <nav class="navbar">
+      <div class="nav-left">
+        <a href="index.html" class="nav-link">Hem</a>
+        <a href="map.html" class="nav-link">Karta</a>
+        <a href="addplant.html" class="nav-link active">Lägg Till</a>
+      </div>
+
+      <div class="nav-right">
+
+  <!-- Notiser-->
+  <a href="profil.html#user-trades" id="notification-link" style="display:none;">
+    <img id="notification-icon" src="notis1.png" alt="notis">
+  </a>
+
+  <!-- Profil-ikon-->
+  <div id="profile-icon-container" class="profile-icon-container" style="display:none;">
+    <img src="user.png" alt="Profil" class="profile-icon" id="profile-icon">
+
+    <div id="profile-dropdown" class="profile-dropdown">
+      <p><strong id="dd-name"></strong></p>
+      <p id="dd-email"></p>
+    </div>
+  </div>
+
+  <!-- Logga in / Logga ut -->
+  <a href="login.html" class="nav-link" id="nav-login-btn">Logga in</a>
+</div>
+<div class="hamburger" id="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+    </nav>
+
+  </header>
+
+  <main>
+    <section class="add-plant-container">
+
+      <form id="plantForm" class="add-plant-form">
+        <h2>Lägg till din växt</h2>
+
+        <!-- NAME -->
+        <div class="form-group">
+          <label for="plantName">Namn</label>
+          <input id="plantName" type="text" id="plantName" placeholder="Ex: Monstera" required />
+        </div>
+
+        <!-- IMAGE -->
+        <div class="form-group">
+          <label for="plantImage">Bild (URL)</label>
+          <input id="plantImage" type="text" id="plantImage" placeholder="Klistra in bildlänk" required />
+        </div>
+
+        <!-- LOCATION -->
+        <div class="form-group">
+          <label for="plantLocation">Plats</label>
+          <input id="plantLocation" type="text" id="plantLocation" placeholder="Ex: Stockholm" required />
+        </div>
+
+        <!-- LIGHT -->
+        <div class="form-group">
+          <label for="lightLevel">Ljusnivå</label>
+          <select id="lightLevel">
+            <option value="1">Låg☀️</option>
+            <option value="2">Medium☀️☀️</option>
+            <option value="3">Hög☀️☀️☀️</option>
+          </select>
+        </div>
+
+        <!-- MAP HERE -->
+        <div id="select-map" style="height: 300px; "></div>
+
+        <button type="submit">Ladda upp</button>
+      </form>
+
+      <div id="confirmation" style="display: none; text-align: center; margin-top: 20px;">
+        <h2>🌱 Växt tillagd!</h2>
+        <p>Din växt har sparats.</p>
+        <p>Vad vill du göra nu?</p>
+
+        <button id="goMap">Se på karta</button>
+        <button id="goHome">Till startsidan</button>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- PLot Twist - FOOTER -->
+  <footer class="plot-footer">
+
+    <!-- Top section -->
+    <div class="footer-top">
+
+      <!-- Left -->
+      <h2 class="plot-footer-logo">PLOT TWIST</h2>
+
+      <!-- Right -->
+      <div class="plot-footer-links">
+        <a href="#">Om oss</a>
+        <a href="#">Kontakt</a>
+        <a href="#">Privacy Policies</a>
+      </div>
+
+    </div>
+
+    <div class="plot-footer-bottom">
+      <p>© 2026 PLOT TWIST</p>
+    </div>
+
+  </footer>
+
+  <!-- <script type="module" src="./src/scripts/admin.js"></script> -->
+  <script type="module" src="./src/scripts/addplant.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script type="module" src="./src/scripts/auth.js"></script>
+  <script type="module" src="./src/scripts/navbar.js"></script>
+</body>
+
+</html>

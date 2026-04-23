@@ -1,0 +1,19 @@
+{
+  "plants": [
+    {
+      "id": "b3f9",
+      "name": "Monstera",
+      "image": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSuZ_IqbQTZgoY77Ei0rDU-5v9mOSzDyJHZ9eK0Fr9fb8TTVo0pFCP5Cxz-8FcziYuNGSQqbSXAK1c7GWT2t6QGDCU-h59GGAOY5NgIJPb9L8wgy5-SBL575uEYKadAr31Jzp_Gcg&usqp=CAc",
+      "location": "Stockholm",
+      "light": "2"
+    },
+    {
+      "id": "c936",
+      "name": "Monstera",
+      "image": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSuZ_IqbQTZgoY77Ei0rDU-5v9mOSzDyJHZ9eK0Fr9fb8TTVo0pFCP5Cxz-8FcziYuNGSQqbSXAK1c7GWT2t6QGDCU-h59GGAOY5NgIJPb9L8wgy5-SBL575uEYKadAr31Jzp_Gcg&usqp=CAc",
+      "location": "Stockholm",
+      "light": "2",
+      "owner": "Okänd"
+    }
+  ]
+}

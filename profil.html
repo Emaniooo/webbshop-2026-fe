@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Karla:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- PLot Twist - HEADER -->
+  <header class="header">
+    <div class="hero">
+      <h1 class="plot-logo">PLOT TWIST</h1>
+      <img src="logo-2.png" alt="plant" class="hero-plant" />
+    </div>
+
+    <nav class="navbar">
+      <div class="nav-left">
+        <a href="index.html" class="nav-link">Hem</a>
+        <a href="map.html" class="nav-link">Karta</a>
+        <a href="addplant.html" class="nav-link">Lägg Till</a>
+      </div>
+
+      <div class="nav-right">
+
+  <!-- Notiser-->
+  <a href="profil.html#user-trades" id="notification-link" style="display:none;">
+    <img id="notification-icon" src="notis1.png" alt="notis">
+  </a>
+
+  <!-- Profil-ikon-->
+  <div id="profile-icon-container" class="profile-icon-container" style="display:none;">
+    <img src="user.png" alt="Profil" class="profile-icon" id="profile-icon">
+
+  <!-- DROPDOWN -->
+    <div id="profile-dropdown" class="profile-dropdown">
+      <p><strong id="dd-name"></strong></p>
+      <p id="dd-email"></p>
+    </div>
+  </div>
+
+  <!-- Logga in / Logga ut -->
+  <a href="login.html" class="nav-link" id="nav-login-btn">Logga in</a>
+</div>
+<div class="hamburger" id="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+  </nav>
+
+  </header>
+    <h1 id="welcome-text">Välkommen!</h1>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content-profile">
+
+    <div class="profile-tabs">
+      <div class="tab-btn active" data-tab="user-plants">Mina växter</div>
+      <div class="tab-btn" data-tab="user-trades">Förfrågningar</div>
+      <div class="tab-btn" data-tab="user-status">Se status</div>
+      <div class="tab-btn" data-tab="user-history">Historik</div>
+    </div>
+
+    <section id="user-plants" class="tab-content active">
+      <div id="plant-list" class="list-container"></div>
+    </section>
+
+    <section id="user-trades" class="tab-content">
+      <p>Inga förfrågningar att visa.</p>
+    </section>
+
+    <section id="user-status" class="tab-content">
+      <div id="status-list" class="list-container"></div>
+    </section>
+
+    <section id="user-history" class="tab-content">
+      <p>Ingen historik att visa.</p>
+    </section>
+  </main>
+
+
+  <!-- PLot Twist - FOOTER -->
+  <footer class="plot-footer">
+
+    <!-- Top section -->
+    <div class="footer-top">
+
+      <!-- Left -->
+      <h2 class="plot-footer-logo">PLOT TWIST</h2>
+
+      <!-- Right -->
+      <div class="plot-footer-links">
+        <a href="#">Om oss</a>
+        <a href="#">Kontakt</a>
+        <a href="#">Privacy Policies</a>
+      </div>
+
+    </div>
+
+    <div class="plot-footer-bottom">
+      <p>© 2026 PLOT TWIST</p>
+    </div>
+
+  </footer>
+
+  <script type="module" src="./src/scripts/profile.js"></script>
+  <script>
+  if (window.location.pathname.includes("profil.html")) {
+    document.getElementById("profile-icon-container").classList.add("active");
+  }
+</script>
+<script type="module" src="./src/scripts/auth.js"></script>
+<script type="module" src="./src/scripts/navbar.js"></script>
+
+</body>
+
+</html>
