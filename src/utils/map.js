@@ -7,6 +7,7 @@ var markersLayer = new L.LayerGroup();	//layer contain searched elements
 
 map.addLayer(markersLayer);
 
+map.addControl(new L.Control.FullScreen());
 
 var controlSearch = new L.Control.Search({
     position: 'topleft',
