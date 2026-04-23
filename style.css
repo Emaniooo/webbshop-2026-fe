@@ -889,3 +889,47 @@ h1, h2 {
   background-color: #cce5ff;
   color: #004085;
 }
+/* HAMBURGER */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 28px;
+  height: 3px;
+  background: #222;
+  border-radius: 3px;
+}
+
+/* MOBILMENY */
+@media (max-width: 768px) {
+
+  .hamburger {
+    display: flex;
+    margin-left: auto;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px 20px;
+  }
+
+  .nav-left,
+  .nav-right {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: #f5f5f5;
+    padding: 20px;
+    gap: 15px;
+  }
+
+  .navbar.open .nav-left,
+  .navbar.open .nav-right {
+    display: flex;
+  }
+}
