@@ -9,10 +9,10 @@ async function loadMyPlants(user) {
   console.log("FIRST PLANT:", plants[0]);
   console.log("USER:", user);
 
-  const myPlants = plants.filter(p => p.ownerId === user.id);
-  
+  const myPlants = plants.filter((p) => p.ownerId === user.id);
+
   const container = document.getElementById("plant-list");
-  
+
   container.innerHTML = myPlants
     .map(
       (p) => `
@@ -24,7 +24,7 @@ async function loadMyPlants(user) {
           <button class="delete-btn" data-id="${p._id}">Ta bort</button>
         </div>
       </div>
-    `
+    `,
     )
     .join("");
 
@@ -43,7 +43,7 @@ async function loadMyPlants(user) {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
-          }
+          },
         );
 
         if (!res.ok) {
@@ -53,7 +53,6 @@ async function loadMyPlants(user) {
 
         alert("Växt borttagen 🌱");
         loadMyPlants(user); // refresh
-
       } catch (err) {
         console.error(err);
         alert("Något gick fel");
@@ -76,15 +75,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Ändra nav-knappen till Logga ut
   const loginBtn = document.getElementById("nav-login-btn");
-loginBtn.textContent = "Logga ut";
-loginBtn.href = "#";
+  loginBtn.textContent = "Logga ut";
+  loginBtn.href = "#";
 
-loginBtn.addEventListener("click", () => {
-  sessionStorage.removeItem("loggedIn");
+  loginBtn.addEventListener("click", () => {
+    sessionStorage.removeItem("loggedIn");
     alert("Du har loggats ut!");
-  window.location.href = "index.html";
-});
-
+    window.location.href = "index.html";
+  });
 
   // Visa profil-ikon när man är inloggad
   const profileIconContainer = document.getElementById(
@@ -110,22 +108,6 @@ loginBtn.addEventListener("click", () => {
       profileDropdown.style.display = "none";
     }
   });
-  // placeholder-data // kommentat ut denna. vill inte använda fake data
-  /* const placeholder = {
-    plants: [
-      { name: "Monstera", location: "Göteborg" },
-      { name: "Aloe Vera", location: "Borås" }
-    ]
-  }; */
-
-  // Växter
-  /* document.getElementById("plant-list").innerHTML =
-    placeholder.plants.map(p => `
-      <div class="list-item">
-        <strong>${p.name}</strong>
-        <p>Plats: ${p.location}</p>
-      </div>
-    `).join(""); */
 
   // Tabs
   const tabButtons = document.querySelectorAll(".tab-btn");
@@ -140,11 +122,122 @@ loginBtn.addEventListener("click", () => {
 
       btn.classList.add("active");
       document.getElementById(tab).classList.add("active");
+
+      if (tab === "user-history") {
+        loadHistory(user);
+      } else if (tab === "user-plants") {
+        loadMyPlants(user);
+      }
     });
   });
-  setTimeout(() => {
-  loadMyPlants(user);
-}, 0);
-
   loadMyPlants(user);
 });
+
+/* HELPER */
+function getStatusBadge(status) {
+  if (status === "pending") {
+    return `<span class="status pending">⏳ Pending</span>`;
+  }
+  if (status === "accepted") {
+    return `<span class="status accepted">✅ Accepted</span>`;
+  }
+  if (status === "rejected") {
+    return `<span class="status rejected">❌ Rejected</span>`;
+  }
+  if (status === "completed") {
+    return `<span class="status completed">🎉 Completed</span>`;
+  }
+  return `<span class="status">${status}</span>`;
+}
+
+/* History */
+async function loadHistory(user) {
+  const res = await fetch(BASE_URL + "trades/me", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+
+  const container = document.getElementById("user-history");
+
+  if (!res.ok) {
+    container.innerHTML = "<p>Session expired – logga in igen</p>";
+    return;
+  }
+
+  const trades = await res.json();
+  const historyData = trades.data || trades;
+
+  console.log("HISTORY DATA:", historyData);
+
+  // 🔒 Safety: ensure array
+  if (!Array.isArray(historyData) || historyData.length === 0) {
+    container.innerHTML = "<p>Ingen historik att visa.</p>";
+    return;
+  }
+
+  // 🔽 Sort newest first
+  historyData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  container.innerHTML = historyData
+    .map((t) => {
+      const plant = t.plantId || t.plant || {};
+
+      // Fix user id comparison (important!)
+      const userId = user._id || user.id;
+
+      const requesterId = t.requesterId?._id || t.requesterId;
+      const ownerId = t.ownerId?._id || t.ownerId;
+
+      const isReceiver = ownerId === userId;
+
+      const isSender = requesterId === userId;
+
+      const otherUser = isSender
+        ? t.ownerId?.name || t.owner?.name || "Unknown"
+        : t.requesterId?.name || t.requester?.name || "Unknown";
+
+
+      const direction = isSender
+        ? `Du skickade till ${otherUser}`
+        : `${otherUser} skickade till dig`;
+
+      return `
+      <div class="list-item">
+        <img 
+          src="${plant.imageUrl || (plant.image?.startsWith("data:image") ? plant.image : "") || "default-plant.png"}" 
+          width="60"
+          onerror="this.src='default-plant.png'"
+        />
+
+        <div>
+          <strong>${plant.plantName || plant.name || "Växt"}</strong>
+          <p>☀️ Light: ${plant.light ?? "N/A"}</p>
+          <p>🤝 ${direction}</p>
+          <p>${getStatusBadge(t.status)}</p>
+          <p>📅 ${new Date(t.createdAt).toLocaleString()}</p>
+
+          ${
+            isReceiver && t.status === "pending"
+              ? `<button class="approve-btn" onclick="approveTrade('${t._id}')">Godkänn</button>`
+              : ""
+          }
+
+        </div>
+      </div>
+      
+    `;
+    })
+    .join("");
+}
+window.approveTrade = async function (id) {
+  await fetch(BASE_URL + "trades/" + id + "/approve", {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+
+  const user = JSON.parse(sessionStorage.getItem("loggedIn"));
+  loadHistory(user);
+};
