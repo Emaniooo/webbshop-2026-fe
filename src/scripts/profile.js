@@ -137,61 +137,107 @@ loginBtn.addEventListener("click", () => {
   loadMyPlants(user);
 });
 
+/* ------------------------------- incoming request start here  ------------------------------------------ */
 
-// incoming request 
 const incomingTab = document.querySelector("#incoming-tab");
+const statusPara = document.createElement("p");
+statusPara.innerHTML = `Status: `;
 
-incomingTab.addEventListener("click", () => {
+const incomingTradesbox = document.querySelector("#Incoming-trades-box");
 
-  console.log("Hej")
-  const statusPara = document.createElement("p");
-  statusPara.innerHTML = `Status: `;
+async function getIncomingReq() {
+  try {
+    //get backend data of trades 
+    const res = await fetch(getBaseUrl() + "trades/me", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
 
-  const incomingTradesBox = document.querySelector("#Incoming-trades-box");
+    console.log(res);
+    if (!res.ok) {
+      throw new Error("Could not fetch trades");
 
-  async function getIncomingReq() {
-    try {
-      const res = await fetch(getBaseUrl() + "trades/me", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-
-      console.log(res);
-      if (!res.ok) {
-        throw new Error("Failed to fetch trades");
-      }
-
-      const data = await res.json();
-
-      const incomingTrades = data; 
-
-      incomingTradesBox.innerHTML = incomingTrades.map(
-      (p) => `
-      <div class="list-item">
-      <p>${p.requesterId?.name || "Okänd"} har skickat en förfrågan</p>
-      <img src="${p.plantId?.imageUrl || "Bild kunde ej laddas"}" width="60" />
-      <div>
-      <strong>${p.plantId?.plantName || "Okänd"}</strong>
-      <p>Plats: ${p.requesterId?.location|| "Okänd"}</p>
-      <button class= "acceptBtn" id= "acceptBtn" >Acceptera</button>
-      <button class= "declineBtn" id= "declineBtn" >Avböj</button>
-      </div>
-      </div>
-      `   ,
-      )
-      .join("");
-
-      console.log(data);
-
-      
-    } catch (error) {
-      console.error(error);
     }
+    
+    const data = await res.json();
+    
+
+    if (!data || data.length === 0) {
+      const displayNoRequests = document.createElement("p");
+      displayNoRequests.innerHTML = `Du har inga förfrågningar`;
+      incomingTradesbox.append(displayNoRequests);
+      return;
+    }
+
+    incomingTradesbox.innerHTML = data.map(
+    (p) => `
+    <div class="list-item">
+    <p>${p.requesterId?.name || "Okänd"} har skickat en förfrågan</p>
+    <img src="${p.plantId?.imageUrl || "Bild kunde ej laddas"}" width="60" />
+    <div>
+    <strong>${p.plantId?.plantName || "Okänd"}</strong>
+    <p>Plats: ${p.requesterId?.location|| "Okänd"}</p>
+    <button class= "acceptBtn" data-id="${p._id}" >Acceptera</button>
+    <button class= "declineBtn" data-id="${p._id}">Avböj</button>
+    
+    
+    </div>
+    </div>
+    `   ,
+    )
+    .join("");
+
+    console.log(data);
+
+    
+  } catch (error) {
+    console.error(error);
   }
 
-  getIncomingReq();
+}
 
-  const acceptBtn = document.quer
 
+
+//check if buttons exist and set logic
+incomingTradesbox.addEventListener("click", (e) => {
+  if(e.target.classList.contains("acceptBtn")) {
+    console.log("approved");
+    // console.log(e.data.id)
+    const idRequest = e.target.dataset.id;
+    console.log("Approved" + idRequest);
+
+    acceptTrade(idRequest);
+  
+
+  } else if(e.target.classList.contains("declineBtn")) {
+    console.log("Declined");
+    const idRequest = e.target.dataset.id;
+    console.log("Declined " + idRequest)
+    //alert here 
+  }
 })
+
+getIncomingReq();
+
+
+async function acceptTrade(id) {
+  try {
+    const res = await fetch(getBaseUrl() + "trades/" + id + "/approve", {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      }
+
+      //alert here 
+    });
+    if (!res.ok) {
+      throw new Error("Failed to approve trade");
+    }
+  } catch (error) {
+    console.error(error);
+    //alert here
+  }
+}
+
+/* ------------------------------- incoming request ends here  ------------------------------------------ */
