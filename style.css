@@ -1034,4 +1034,9 @@ h1, h2 {
   .navbar.open .nav-right {
     display: flex;
   }
+  
+  .hero-title-växt {
+    font-size: 55px;
+    margin-left: 8rem;
+  }
 }
